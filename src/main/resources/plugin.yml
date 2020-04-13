@@ -1,0 +1,10 @@
+name: TH-TimeMeasurment
+version: ${project.version}
+main: pl.tryhardujemy.playertime.TimeMeasurmentPlugin
+authors: [Twuj, stary]
+description: Plugin na mierzenie czasu gracza na serwerze.
+website: tryhardujemy.pl
+commands:
+  time:
+    description: Zobacz ile typ00k grał na serwerze
+    aliases: [czas, srasz]
