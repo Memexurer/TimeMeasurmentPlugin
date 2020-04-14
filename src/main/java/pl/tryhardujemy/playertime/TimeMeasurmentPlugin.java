@@ -41,7 +41,7 @@ public final class TimeMeasurmentPlugin extends JavaPlugin implements Listener {
         this.timeData.loadData();
 
         this.getCommand("time").setExecutor(new TimeMeasurementCommand());
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, timeData::saveData, 20L * 60L * 5L, 20L * 60L * 5L);
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, timeData::saveData, 20L * 60L * 5L, 20L * 60L * 5L);
         Bukkit.getPluginManager().registerEvent(PlayerJoinEvent.class, this, EventPriority.NORMAL, (listener, event) -> timeData.joinPlayer(((PlayerJoinEvent) event).getPlayer()), this);
     }
 
@@ -57,8 +57,10 @@ public final class TimeMeasurmentPlugin extends JavaPlugin implements Listener {
     private PluginDatabaseConnection findDatabaseService() {
         for (Class<?> clazz : getServicesManager().getKnownServices()) {
             RegisteredServiceProvider<?> serviceProvider = getServicesManager().getRegistration(clazz);
-            this.getLogger().info("Znaleziono plugin, z ktorego mozna ukrasc baze danych (" + serviceProvider.getPlugin().getName() + ")");
-            return (PluginDatabaseConnection) serviceProvider.getProvider();
+            if (serviceProvider.getProvider() instanceof PluginDatabaseConnection) {
+                this.getLogger().info("Znaleziono plugin, z ktorego mozna ukrasc baze danych (" + serviceProvider.getPlugin().getName() + ")");
+                return (PluginDatabaseConnection) serviceProvider.getProvider();
+            }
         }
 
         this.getLogger().info("Nie znaleziono zadnego pluginu, który używa memowej bazy danych.");
