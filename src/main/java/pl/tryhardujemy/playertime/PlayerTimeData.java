@@ -1,8 +1,7 @@
 package pl.tryhardujemy.playertime;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import pl.tryhardujemy.playertime.data.PluginDatabaseConnection;
+import pl.memexurer.database.PluginDatabaseConnection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,11 +33,11 @@ public class PlayerTimeData {
     void saveData() throws SQLException {
         Statement batchStatement = connection.getConnection().createStatement();
 
-        for (Map.Entry<String, PlayerTime> entry: playerTime.entrySet()) {
+        for (Map.Entry<String, PlayerTime> entry : playerTime.entrySet()) {
             System.out.println(entry.getValue().playerTime);
             if (entry.getValue().needInsert) {
                 batchStatement.addBatch("INSERT INTO playertime (PlayerName, PlayerTime) VALUES ('" + entry.getKey() + "', '" + entry.getValue().getPlayerTime() + "');");
-            } else if(entry.getValue().needUpdate){
+            } else if (entry.getValue().needUpdate) {
                 batchStatement.addBatch("UPDATE playertime " +
                         "SET PlayerTime='" + entry.getValue().getPlayerTime() + "' " +
                         "WHERE PlayerName='" + entry.getKey() + "'");
@@ -58,7 +57,7 @@ public class PlayerTimeData {
      * @return czas grania w sekundach
      */
     public Optional<Long> getPlayerTime(Player player) {
-        if(!playerTime.containsKey(player.getName())) return Optional.empty();
+        if (!playerTime.containsKey(player.getName())) return Optional.empty();
         else return Optional.of(playerTime.get(player.getName()).getPlayerTime());
     }
 
@@ -68,7 +67,7 @@ public class PlayerTimeData {
      * @return czas grania w sekundach
      */
     public Optional<Long> getPlayerTime(String playerName) {
-        if(!playerTime.containsKey(playerName)) return Optional.empty();
+        if (!playerTime.containsKey(playerName)) return Optional.empty();
         else return Optional.of(playerTime.get(playerName).getPlayerTime());
     }
 
@@ -93,7 +92,7 @@ public class PlayerTimeData {
         }
 
         long calculateSeconds() {
-            if(joinTime == 0) return 0;
+            if (joinTime == 0) return 0;
             return (System.currentTimeMillis() - joinTime) / 1000;
         }
 
