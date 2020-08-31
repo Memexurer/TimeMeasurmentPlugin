@@ -1,5 +1,7 @@
 package pl.tryhardujemy.playertime;
 
+import pl.memexurer.database.DatabaseCredentials;
+
 import java.util.concurrent.TimeUnit;
 
 public final class TimeParsingUtils {

@@ -29,6 +29,7 @@ public final class TimeMeasurmentPlugin extends JavaPlugin implements Listener {
 
         if (!(new File(getDataFolder(), "config.yml").exists())) saveResource("config.yml", false);
 
+
         PluginDatabaseConnection databaseConnection = findDatabaseService();
         if (databaseConnection == null) {
             databaseConnection = new PluginDatabaseConnection(new DatabaseCredentials(getConfig().getConfigurationSection("database")));
